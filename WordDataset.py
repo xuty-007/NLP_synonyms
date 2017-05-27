@@ -179,10 +179,11 @@ def test_isSubSentence(sentence):
     print(sentence.isSubSentence("have just"))
     print(sentence.isSubSentence("i already"))
 
-s = Sentence("I just had dinner, as well.", [['just had','have just finished'], ['dinner', 'meal', 'lunch'], ['too', 'as well'],['just','already'],['good','well']])
-test_Class(s)
-test_Sentence(s)
-test_isSubSentence(s)
-test_SubSentence(s)
-test_isSubSentence(s)
+if __file__ == 0:
+    s = Sentence("I just had dinner, as well.", [['just had','have just finished'], ['dinner', 'meal', 'lunch'], ['too', 'as well'],['just','already'],['good','well']])
+    test_Class(s)
+    test_Sentence(s)
+    test_isSubSentence(s)
+    test_SubSentence(s)
+    test_isSubSentence(s)
 
