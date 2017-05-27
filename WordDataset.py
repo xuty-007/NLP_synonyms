@@ -1,9 +1,12 @@
 class WordDataset:
     def __init__(self):
+        # word or phrase map to synonyms
         self.wordSet = {}
+        # synonym list. All synonyms will be in the same list. one word will be the key.
         self.synonyms = {}
         self.gram = 0
 
+    # add synonym list to the dataset. It will combine existing synonym list.
     def addSynonyms(self,synList):
         if synList[0] in self.wordSet:
             key_id = self.wordSet[synList[0]]
@@ -31,6 +34,7 @@ class WordDataset:
             else:
                 self.wordSet[word] = key_id
                 self.synonyms[key_id].append(word)
+    # iterator to iter the synonyms that word belongs to.
     def iterSynonyms(self,word):
         if word in self.wordSet:
             for i in self.synonyms[self.wordSet[word]]:
@@ -41,10 +45,12 @@ class WordDataset:
 
 
 class Sentence:
+    # Shared word dataset.
     wordData = WordDataset()
     __strips = ",.?!\""
 
     def __init__(self, sentence, synList = []):
+        # to save time, subsequences of sentence is stored in a set.
         self.subSentenceSet = set()
         self.split_sentence = []
         self.str_sentence = sentence
@@ -66,7 +72,7 @@ class Sentence:
                             split_list[i].append(self.lst_sentence[i])
                         ele_num = len(split_list[i]) if ele_num < len(split_list[i]) else ele_num
                     split_list[idx].append(token)
-        
+        # generate possible annotations.
         n = [len(lst) if len(lst)>0 else 1 for lst in split_list]
         cnt = [0] * len(n)
         k = 0
@@ -92,7 +98,7 @@ class Sentence:
 
     def addSynonyms(self,synList):
         self.wordData.addSynonyms(synList)
-
+    # enumerate all rewrite of sentence
     def enumSentence(self):
         return self.__enumSentence(self.split_sentence)
 
@@ -122,7 +128,7 @@ class Sentence:
                     k -= 1
                 if k == 0:
                     break
-
+    # enumerate all rewrite of subsequnces of sentence
     def enumSubSentence(self):
         return self.__enumSubSentence(self.split_sentence)
 
@@ -137,8 +143,10 @@ class Sentence:
                         yield subsequence
 
     def isSubSentence(self, str):
+        # if the set of subsquences of sentence is available, check in it to save time.
         if str in self.subSentenceSet:
             return True
+        # if the str is not in the set, search as normal.
         str_list = str.split()
         for l in self.split_sentence:
             k = 0
